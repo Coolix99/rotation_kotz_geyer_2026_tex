@@ -8,6 +8,7 @@
 \usepackage{bm}
 \definecolor{lightgray}{rgb}{0.8,0.8,0.8}
 
+\newcommand{\red}[1]{\textcolor{red}{#1}}
 
 \begin{document}
 \title{Rotation}
@@ -15,31 +16,101 @@
 \date{}
 \author{Maximilian Kotz}
 \affiliation{Cluster of Excellence Physics of Life, TU Dresden, Dresden, Germany}
-\author{Veikko F. Geyer}
-\affiliation{B CUBE, TU Dresden, Dresden, Germany}
+% \author{Veikko F. Geyer}
+% \affiliation{B CUBE, TU Dresden, Dresden, Germany}
 
 
-\email{maximilian.kotz@tu-dresden.de}
+% \email{maximilian.kotz@tu-dresden.de}
 \date{\today}
 
 \begin{abstract}
 \dots
 \end{abstract}
 
-
 \maketitle
 
 \section{Methods used by others}
 The persistence length $L_p$ (phenomenological quantity) is defined by the
 \begin{equation}
-  \langle \bm{t}(0)\cdot\bm{t}(s) \rangle = \langle \cos\left[ \theta(0) - \theta(s) \right] \rangle = C(s) = e^{-|s|/2L_p}
+  \langle \bm{t}(0)\cdot\bm{t}(s) \rangle = \langle \cos\left[ \theta(0) - \theta(s) \right] \rangle = C(s) = e^{-|s|/2L_p} \, .
+  \label{eq:def_lp}
 \end{equation} 
 
 \subsection{Used in Graham et al.~\cite{graham_multi-platform_2014}}
+\paragraph{Cosine correlation.}
+One can directly determine $L_p$ by fitting an exponential to numerically estimated values of $C(s)$. Because of noise the values will be underestimated.
+The authors~\cite{graham_multi-platform_2014} suggest with reference to~\cite{isambert_flexibility_1995,gittes_flexural_1993} to fit an exponential with free amplitude.
+\red{fitted in log or real, fitted up to which s, fitted with which weight}
 
-~\cite{graham_multi-platform_2014}
+\paragraph{End to end distance.} 
+The end-to-end distance as function of contour length is given by~\cite{howard2001mechanics,landau1980statistical}
+\begin{equation}
+  \langle R^2 \rangle = 2L_p^2 \left( e^{-L/L_p} - 1 + L/L_p \right)
+\end{equation}
+They used only actual end-to-end distance and therefore one datapoint per filament.
+\red{cant we calculate all R2 depending on separation}
+
+\paragraph{Fourier analysis.} 
+From equipartition theorem we know \cite{gittes_flexural_1993}
+\begin{equation}
+  L_p = \frac{L^2}{n^2 \pi^2 \operatorname{Var}(a_n)}
+\end{equation}
+
 \subsection{Used in Wisanpitayakorn et al.~\cite{wisanpitayakorn_measurement_2022}}
+\paragraph{Curvature.}
+The setup is a chain with points sampled approximately equidistant with distance $\Delta s$.
+For small $\Delta s$ one assumes the probability of a curvature at a given node ($\kappa=\theta/\Delta s$)
+\begin{equation}
+  P(\kappa) = \sqrt{\frac{L_p \Delta s}{2 \pi}} e^{-L_p \Delta s \kappa^2/2} \, .
+\end{equation}
+By taking just every mth node one gets chains with less points, there porbability distribution is given by
+\begin{equation}
+  P(\kappa^{(m)})=\sqrt{\frac{\Lambda^{(m)}}{2\pi}}e^{-\Lambda^{(m)} (\kappa^{(m)})^2/2}
+\end{equation}
+with \begin{equation}
+  \Lambda^{(m)} = L_p \mu^{(m)} \Delta s^{(m)}
+  \label{eq:lambda_Lp}
+\end{equation}
+and
+\begin{equation}
+  \mu^{(m)} = \frac{m}{(2m - 1)(1 - 1/m)/3 + 1}
+\end{equation}
+One estimates for each m the $\Lambda$ by fitting the cumulative distribution
+\begin{equation}
+  C(\kappa)^{(m)} = \frac{1}{2}\left[1 +  \operatorname{erf}\left( \sqrt{\frac{\Lambda}{2}}(\kappa^{(m)} - \kappa_0^{(m)})\right)\right]
+\end{equation}
+where $\kappa_0$ is the mean if the distribution.
+Finally $L_p$ is obtained by the linear fit using Eq. \ref{eq:lambda_Lp}.
 
+\paragraph{Fourier analysis.}
+They used
+\begin{equation}
+  \langle (\frac{a_n - a_n^0}{L})^2 \rangle = \frac{1}{\pi^2 L_p n^2} + \langle \frac{4 \epsilon^2}{L^3}[1 + (N-1) \sin^2(\frac{n\pi}{2N})] \rangle
+\end{equation}
+ Where $\epsilon_k$ is random displacement and $N$ number of sampling points. 
+
+\subsection{Used in van den Heuvel et al.~\cite{van_den_heuvel_persistence_2007}}
+Gliding assay. The free end of the microtubule can bind to kinesin. It binds with a distance $d_i$ from the last binding. 
+It dies so under an angle standart distributed with $\operatorname{Var}(\theta_i) = d_i/L_p$. Therefore after N connections we have
+$\operatorname{Var}(\theta)= \sum_i \operatorname{Var}(\theta_i)$ and a total distance of $d=\sum_i d_i$, which gives
+\begin{equation}
+  \operatorname{Var}(\theta) = d/L_p
+\end{equation}
+They determined the variance for different lag times and performed linear fit. Ones has to be careful as the data is correlated.
+Finally they performed linear regression.
+They obtained $\theta$ from finite difference of consecutive frame of the tip of the MT.
+
+\subsection{Used in Lamour et al.~\cite{lamour_easyworm_2014}}
+\paragraph{Persistence length calculation}
+Same as Cosine correlation in ~\cite{graham_multi-platform_2014}
+
+\paragraph{End to end distance.}
+Also same as in ~\cite{graham_multi-platform_2014} but here maybe in fact with taking also parts of the chain and not only the total one.
+
+\paragraph{Secant}
+They cite ~\cite{gittes_flexural_1993}.
+Only valid for $L_p$ much longer than contour length.
+Take a look at there page 2 fig 2.
 
 \bibliography{rotation}
 
