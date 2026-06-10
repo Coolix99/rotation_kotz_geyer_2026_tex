@@ -112,7 +112,78 @@ They cite ~\cite{gittes_flexural_1993}.
 Only valid for $L_p$ much longer than contour length.
 Take a look at there page 2 fig 2.
 
+\section{Cosine method}
+Assume the true chain fulfills
+\begin{equation}
+  \langle C(s_i, s_j) \rangle =  \langle \cos\left[ \theta(s_i) - \theta(s_j) \right] \rangle = e^{-\frac{|s_i-s_j|}{2L_p}} \, ,
+\end{equation} 
+we measure angles
+\begin{equation}
+  y_i = \theta(s_i) + e_i \, ,  \quad e_i \sim \mathcal{N}(0, \sigma^2).
+\end{equation}
+There we can calculate 
+\begin{equation}
+  C_{ij} = \cos(y_i - y_j) \, .
+\end{equation}
+We have
+\begin{equation}
+  y_i - y_j = \theta(s_i) - \theta(s_j) + e_i - e_j \, ,
+\end{equation}
+and 
+\begin{equation}
+  \operatorname{Var}(y_i-y_j) = \frac{|s_i-s_j|}{L_p}+2\sigma^2 \,
+\end{equation}
+for $i\neq j$. This implies
+\begin{equation}
+  \langle C_{ij} \rangle = \exp\left[ -\frac{|s_i - s_j|}{2L_p} - \sigma^2 \right]
+\end{equation}
+This is the justification for letting the amplitude free in the exponential fit. 
+Now we calculate the covariance matrix.
+We first define
+\begin{equation}
+  X_{ij} = y_i - y_j \quad \text{and} \quad q_{ij,kl} = \operatorname{Cov}(X_{ij}, X_kl) \,
+\end{equation}
+and find
+\begin{equation}
+  q_{ij,kl} = \frac{|s_i - s_l| + |s_j - s_k| - |s_i - s_k| - |s_j-s_l|}{2L_p} + \sigma^2(\delta_{ik} - \delta_{il} - \delta_{jk} + \delta_{jl}).
+\end{equation}
+For the special case
+\begin{equation}
+  q_{ij,ij} = \operatorname{Var}(X_{ij}) = \frac{|s_i - s_j|}{L_p} + 2\sigma^2
+\end{equation}
+which is valid for $i\neq j$.
+Using 
+\begin{equation}
+  \cos X \cos Y = \frac{1}{2}[\cos(X+Y)+\cos(X-Y)] \,  
+\end{equation}
+we find
+\begin{equation}
+  \operatorname{Cov}(C_{ij},C_{kl})=\exp \left[-\frac{1}{2}q_{ij,ij} -\frac{1}{2}q_{kl,kl} \right] \left[\cosh(q_{ij,kl}) - 1 \right].
+\end{equation}
+So for the observation vector $\hat{C}_{ij}$ we have the log likelihood
+\begin{equation}
+  l \sim \left[\hat{C} - m(L_p,\sigma) \right]^T \Sigma_C(L_p, \sigma)^{-1} \left[\hat{C} - m(L_p,\sigma) \right] \,
+\end{equation}
+where $\Sigma_C$ the covariance matrix and
+\begin{equation}
+  m_{ij}(L_p, \sigma) = \exp \left[- \frac{|s_i - s_j|}{2L_p} - \sigma^2\right]
+\end{equation}
+Individual chains are not correlated leading to a block diagonal covariance matrix.
+
+
+\section{End-to-end method}
+The end-to-end distance between the points i and j $D_{ij}=R_{ij}^2$ separated by a distance of $l_{ij}=|s_i - s_j|$ is expected to be
+\begin{equation}
+  \langle D_{ij} \rangle = F(l_{ij}, L_p) = 4 L_p^2 \left( e^{-l_{ij}/2L_p} - 1 + \frac{l_{ij}}{2L_p} \right) \, .
+\end{equation}
+If we add at both sides random noise we find
+\begin{equation}
+  \langle \hat{D}_{ij} \rangle = F(l_{ij}, L_p) + \sigma_r^2 \,.
+\end{equation}
+This is good enough.
+
 \bibliography{rotation}
+
 
 
 \end{document}
